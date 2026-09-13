@@ -66,5 +66,17 @@ data$supplier[is.na(data$supplier)] <- "Unknown"
 #control
 colSums(is.na(data)) # Handled missing values.
 
+# 4) Noise 
+# Is there negative sales?
+sum(data$retail_sales < 0)   # there is no negative sales
+sum(data$warehouse_sales < 0)  # there is no negative sales 
 
+# I am going to keep only the drink categories I need
+table(data$item_type) 
+# I need just (wine, liquor, beer,non alcahol)
+data <- subset(data, item_type == "WINE" | item_type == "LIQUOR" | item_type == "BEER" | item_type == "NON-ALCOHOL")
+
+# 5) Column Selection
+data <- data[, c("year","month","item_type","retail_sales","retail_transfers","warehouse_sales")]
+# I did not use these columns; supplier, item_code, item_description , because there is too many unique values not used.
 
