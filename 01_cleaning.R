@@ -102,7 +102,31 @@ data <- data[data[["total_sales"]] > 0, ]
 data[["retail_share"]] <- data[["retail_sales"]] / data[["total_sales"]]
 
 # channel label
-# If half or more of the sales are retail, label it retail heavy, otherwise wholesale heavy , I m doing for the chi-square test
-data[["channel"]] <- ifelse(data[["retail_share"]] >= 0.5, "retail-heavy", "wholesale-heavy")
+# If half or more of the sales are retail, label it retail heavy, otherwise wholesale heavy , I m doing for the chi square test
+data[["channel"]] <- ifelse(data[["retail_share"]] >= 0.5, "retail heavy", "wholesale-heavy")
 data[["channel"]] <- factor(data[["channel"]]) # I am  convert to factor so R treats it as a category same as a season column
 names(data)
+
+# 7) Outliers
+# I am going to use boxplot to defined outliers.
+boxplot(data[["total_sales"]], main = "Total sales outliers")
+
+# IQR method for counting high outliers
+Q1 <- quantile(data[["total_sales"]], 0.25)
+Q3 <- quantile(data[["total_sales"]], 0.75)
+IQR_value <- Q3 - Q1
+upper <- Q3 + 1.5 * IQR_value
+sum(data[["total_sales"]] > upper) 
+# there is 46.360 outliers.
+# Sales are naturally skewed, so I m going to keep outliers.
+
+# 8) Normalization: z score 
+data[["retail_sales_z"]]    <- scale(data[["retail_sales"]])
+data[["warehouse_sales_z"]] <- scale(data[["warehouse_sales"]])
+summary(data[["retail_sales_z"]])
+# Z score normalization;  rescale numeric sales to mean 0 and standard deviation 1
+
+# 9) save clean data
+saveRDS(data, "clean_full.rds")
+
+
