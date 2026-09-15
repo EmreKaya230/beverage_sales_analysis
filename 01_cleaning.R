@@ -55,7 +55,7 @@ data$retail_sales[is.na(data$retail_sales)]         <- 0
 data$warehouse_sales[is.na(data$warehouse_sales)]   <- 0
 data$retail_transfers[is.na(data$retail_transfers)] <- 0
 
-# I cannot guess the category. I ll drop
+# I cannot guess the category. I ll drop 
 # (item_type)
 data <- data[!is.na(data$item_type), ]
 
@@ -78,5 +78,31 @@ data <- subset(data, item_type == "WINE" | item_type == "LIQUOR" | item_type == 
 
 # 5) Column Selection
 data <- data[, c("year","month","item_type","retail_sales","retail_transfers","warehouse_sales")]
-# I did not use these columns; supplier, item_code, item_description , because there is too many unique values not used.
+# I did not use these columns; supplier, item_code, item_description , because there is too many unique values not used
 
+# 6) Feature Engineering
+# season 
+# I ll group months into 4 seasons because analyzing seasonal sales patterns more clearly.
+# each month matching their seasons. For example : months ; 6,7,8 = Summer 
+data["season"] <- "Autumn"
+data[["season"]][data[["month"]] == 12 | data[["month"]] == 1 | data[["month"]] == 2] <- "Winter"
+data[["season"]][data[["month"]] == 3  | data[["month"]] == 4 | data[["month"]] == 5] <- "Spring"
+data[["season"]][data[["month"]] == 6  | data[["month"]] == 7 | data[["month"]] == 8] <- "Summer"
+data[["season"]] <- factor(data[["season"]])  # I am  convert to factor so R treats it as a category .
+
+# total sales
+# I need total sales because it gives the overall volume of a product and it helps to compute retail share
+data[["total_sales"]] <- data[["retail_sales"]] + data[["warehouse_sales"]]
+
+# drop rows where total is 0
+# I am dropping rows where total_sales is 0 , because total sales is the  denominator and would make the result undefined
+data <- data[data[["total_sales"]] > 0, ]
+
+# adding new column name as retail_share 
+data[["retail_share"]] <- data[["retail_sales"]] / data[["total_sales"]]
+
+# channel label
+# If half or more of the sales are retail, label it retail heavy, otherwise wholesale heavy , I m doing for the chi-square test
+data[["channel"]] <- ifelse(data[["retail_share"]] >= 0.5, "retail-heavy", "wholesale-heavy")
+data[["channel"]] <- factor(data[["channel"]]) # I am  convert to factor so R treats it as a category same as a season column
+names(data)
