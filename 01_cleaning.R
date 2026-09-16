@@ -73,8 +73,8 @@ sum(data$warehouse_sales < 0)  # there is no negative sales
 
 # I am going to keep only the drink categories I need
 table(data$item_type) 
-# I need just (wine, liquor, beer,non alcahol)
-data <- subset(data, item_type == "WINE" | item_type == "LIQUOR" | item_type == "BEER" | item_type == "NON-ALCOHOL")
+# I need just (wine, liquor, beer)
+data <- subset(data, item_type == "WINE" | item_type == "LIQUOR" | item_type == "BEER")
 
 # 5) Column Selection
 data <- data[, c("year","month","item_type","retail_sales","retail_transfers","warehouse_sales")]
