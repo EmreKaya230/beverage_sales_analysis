@@ -68,8 +68,8 @@ colSums(is.na(data)) # Handled missing values.
 
 # 4) Noise 
 # Is there negative sales?
-sum(data$retail_sales < 0)   # there is no negative sales
-sum(data$warehouse_sales < 0)  # there is no negative sales 
+sum(data[["retail_sales"]] < 0)   # there is no negative sales
+sum(data[["warehouse_sales"]] < 0)  # there is no negative sales 
 
 # I am going to keep only the drink categories I need
 table(data[["item_type"]]) 
