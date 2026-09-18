@@ -21,7 +21,7 @@ All tests use a significance level of alpha = 0.05.
 ## Data
 - **Source:** Montgomery County Warehouse and Retail Sales data.gov
   https://catalog.data.gov/dataset/warehouse-and-retail-sales
-- **Raw:** 341,037 rows x 9 columns -> **after cleaning + feature engineering:** 322,966 rows x 12 columns
+- **Raw:** 341,037 rows x 9 columns -> **after cleaning and feature engineering:** 322,966 rows x 12 columns
 - Cleaning: filled missing sales with 0, dropped missing item_type, filled supplier with "unknown",
   kept only wine/liquor/beer. Feature engineering: season, total_sales, channel.
 
