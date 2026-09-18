@@ -14,7 +14,7 @@ model <- lm(log1p(warehouse_sales) ~ item_type + season + retail_sales, data = d
 summary(model) # summary going to show coefficients, their p values and R square
 # Beer sells most in the warehouse and higher retail sales mean higher warehouse sales
 # the model explains about 31% ,adj R2 = 0.31
-
+confint(model)
 #graph
 plot(model)
 
@@ -61,3 +61,4 @@ boxplot(log_sales ~ item_type, data = data,
         col = c("orange", "blue", "red"),
         main = "Sales by drink type",
         xlab = "", ylab = "log sales")
+
