@@ -29,9 +29,9 @@ All tests use a significance level of alpha = 0.05.
 1. Open `beverage_sales_analysis.Rproj` in RStudio.
 2. Install packages: `install.packages(c("car","lmtest"))`
 3. Run the scripts in order:
-   - `01_cleaning.R` — cleaning, feature engineering, sampling
-   - `02_eda.R` — descriptive statistics + plots
-   - `03_business_questions.R` — regression, chi-square, ANOVA
+   - `01_cleaning.R` = cleaning, feature engineering, sampling
+   - `02_eda.R` = descriptive statistics + plots
+   - `03_business_questions.R` = regression, chi-square, ANOVA
 
 ## Key findings
 - **Beer sells the most** on average (82.9), far above liquor (14.0) and wine (10.2).
