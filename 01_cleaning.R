@@ -9,7 +9,7 @@ head(data)
 class(data) 
 str(data)
 #Column names 
-names(data) # column names are inconsisten
+names(data) # column names are inconsistent
 
 #Summary statistics
 summary(data)
@@ -21,7 +21,7 @@ colSums(is.na(data)) # there is missing values
 sum(duplicated(data)) # ther is no duplicated  values
 
 # Unique values of the key categorical column
-table(data$`ITEM TYPE`)
+table(data[["ITEM TYPE"]])
 
 
 #  1) Data Cleaning
@@ -51,17 +51,17 @@ data
 
 #  Blank sales values mean no sales that month. I ll fill them with 0
 #(retail_sales,warehouse_sales,retail_transfers)
-data$retail_sales[is.na(data$retail_sales)]         <- 0
-data$warehouse_sales[is.na(data$warehouse_sales)]   <- 0
-data$retail_transfers[is.na(data$retail_transfers)] <- 0
+data[["retail_sales"]][is.na(data[["retail_sales"]])]         <- 0
+data[["warehouse_sales"]][is.na(data[["warehouse_sales"]])]   <- 0
+data[["retail_transfers"]][is.na(data[["retail_transfers"]])] <- 0
 
 # I cannot guess the category. I ll drop 
 # (item_type)
-data <- data[!is.na(data$item_type), ]
+data <- data[!is.na(data[["item_type"]]), ]
 
 # supplier is text that's why I ll fill them with Unknown 
 #(supplier)
-data$supplier[is.na(data$supplier)] <- "Unknown"
+data[["supplier"]][is.na(data[["supplier"]])] <- "Unknown"
 
 #control
 colSums(is.na(data)) # Handled missing values.
@@ -72,7 +72,7 @@ sum(data$retail_sales < 0)   # there is no negative sales
 sum(data$warehouse_sales < 0)  # there is no negative sales 
 
 # I am going to keep only the drink categories I need
-table(data$item_type) 
+table(data[["item_type"]]) 
 # I need just (wine, liquor, beer)
 data <- subset(data, item_type == "WINE" | item_type == "LIQUOR" | item_type == "BEER")
 
@@ -88,7 +88,7 @@ data["season"] <- "Autumn"
 data[["season"]][data[["month"]] == 12 | data[["month"]] == 1 | data[["month"]] == 2] <- "Winter"
 data[["season"]][data[["month"]] == 3  | data[["month"]] == 4 | data[["month"]] == 5] <- "Spring"
 data[["season"]][data[["month"]] == 6  | data[["month"]] == 7 | data[["month"]] == 8] <- "Summer"
-data[["season"]] <- factor(data[["season"]])  # I am  convert to factor so R treats it as a category .
+data[["season"]] <- factor(data[["season"]])  # I convert to factor so R treats it as a category .
 
 # total sales
 # I need total sales because it gives the overall volume of a product and it helps to compute retail share
@@ -104,8 +104,9 @@ data[["retail_share"]] <- data[["retail_sales"]] / data[["total_sales"]]
 # channel label
 # If half or more of the sales are retail, label it retail heavy, otherwise wholesale heavy , I m doing for the chi square test
 data[["channel"]] <- ifelse(data[["retail_share"]] >= 0.5, "retail heavy", "wholesale-heavy")
-data[["channel"]] <- factor(data[["channel"]]) # I am  convert to factor so R treats it as a category same as a season column
+data[["channel"]] <- factor(data[["channel"]]) # I convert to factor so R treats it as a category same as a season column
 names(data)
+
 
 # 7) Outliers
 # I am going to use boxplot to defined outliers.
@@ -126,7 +127,12 @@ data[["warehouse_sales_z"]] <- scale(data[["warehouse_sales"]])
 summary(data[["retail_sales_z"]])
 # Z score normalization;  rescale numeric sales to mean 0 and standard deviation 1
 
+#final data shape # 322966     12
+dim(data)
+
 # 9) save clean data
 saveRDS(data, "clean_full.rds")
+
+
 
 
