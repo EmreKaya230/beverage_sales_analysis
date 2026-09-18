@@ -45,6 +45,3 @@ All tests use a significance level of alpha = 0.05.
 Regression residuals are not normal (many zeros in warehouse sales), and the very large sample
 (approx. 323,000 rows) makes almost everything significant, so effect sizes were considered alongside
 p-values. Results show relationships, not cause and effect.
-
-## Author
-Emre Kaya 
